@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">News Feed</string>
+    <string name="discover_the_latest_news">Discover the latest news</string>
+    <string name="more_than_thousands_of_new_stories_come_up_each_day">More than thousands of new stories come up each day</string>
+    <string name="choose_your_interest">Choose your interest</string>
+    <string name="choose_the_news_that_you_love_and_are_most_interested_in">Choose the news that you love and are most interested in</string>
+    <string name="amazing_ai_features_to_help_with_analysis">Amazing AI features to help with analysis</string>
+    <string name="smart_experience_from_browsing_to_delivery">Smart experience, from browsing to delivery</string>
+    <string name="choose_the_method_we_use_to_reset_your_password">Choose the method we use to reset your password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="otp_authentication">OTP Authentication</string>
+    <string name="email_address">Email Address</string>
+    <string name="continue_txt">CONTINUE</string>
+    <string name="enter_email">"Enter Email: "</string>
+    <string name="enter_otp_sent_to_s">Enter OTP sent to %s</string>
+    <string name="create_a_new_password">Create a new password</string>
+    <string name="verify_user">Verify User</string>
+    <string name="verify">Verify</string>
+</resources>

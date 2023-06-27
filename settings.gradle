@@ -1,0 +1,28 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(file("github.properties")))
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            name = "GithubPackages"
+            url = uri("https://maven.pkg.github.com/mobileappconsultant/newsfeedkmmsdk")
+            credentials {
+                username = githubProperties["gpr.user"] ?: System.getenv("GPR_USER")
+                password = githubProperties["gpr.key"] ?: System.getenv("GPR_KEY")
+            }
+        }
+    }
+}
+
+rootProject.name = "NewsFeed"
+include ':app'
