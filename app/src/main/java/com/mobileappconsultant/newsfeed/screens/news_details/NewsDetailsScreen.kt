@@ -1,5 +1,6 @@
 package com.mobileappconsultant.newsfeed.screens.news_details
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -64,6 +68,8 @@ fun NewsDetailsScreen(
 
     val summaryText = remember { viewModel.summaryText }
 
+    val context = LocalContext.current
+
     Scaffold(
         topBar = { TopAppBar(
             modifier = Modifier
@@ -73,25 +79,27 @@ fun NewsDetailsScreen(
                     modifier = Modifier
                         .clickable { navController.popBackStack() },
                     painter = painterResource(R.drawable.back),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                 )
             },
             title = {},
             actions = {
                 Icon(
                     modifier = Modifier
-                        .clickable { }
-                        .padding(end = 16.dp),
-                    painter = painterResource(R.drawable.bookmark),
-                    contentDescription = "Bookmark",
-                )
+                        .clickable {
+                            val intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, article.link)
+                                putExtra(Intent.EXTRA_SUBJECT, article.title)
+                                type = "text/plain"
+                            }
 
-                Icon(
-                    modifier = Modifier
-                        .clickable { }
+                            val shareIntent = Intent.createChooser(intent, context.getString(R.string.share_news))
+                            context.startActivity(shareIntent)
+                        }
                         .padding(end = 16.dp),
                     painter = painterResource(R.drawable.share),
-                    contentDescription = "Share",
+                    contentDescription = stringResource(R.string.share),
                 )
             }
         ) }
@@ -132,7 +140,7 @@ fun NewsDetailsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = article.categories?.joinToString() ?: "Unknown",
+                        text = article.categories?.joinToString() ?: stringResource(R.string.unknown),
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.W500,
                     )
@@ -160,10 +168,10 @@ fun NewsDetailsScreen(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.heart),
-                            contentDescription = "Heart",
+                            contentDescription = stringResource(R.string.heart),
                         )
 
-                        Text("0 Likes")
+                        Text(stringResource(R.string._0_likes))
                     }
 
                     Row(
@@ -173,10 +181,10 @@ fun NewsDetailsScreen(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.chatgpt),
-                            contentDescription = "Summarize",
+                            contentDescription = stringResource(R.string.summarize),
                         )
 
-                        Text("Summarize")
+                        Text(stringResource(R.string.summarize))
                     }
                 }
             }
@@ -216,13 +224,16 @@ fun SummarizeDialog(
                 .clip(RoundedCornerShape(16.dp))
                 .fillMaxWidth()
                 .height(500.dp)
-                .background(Color.LightGray)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
-                text = "Article Summary",
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.article_summary),
                 style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.W600,
+                textAlign = TextAlign.Center,
             )
 
             Text(
@@ -233,14 +244,7 @@ fun SummarizeDialog(
 
             PrimaryButton(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Close",
-            ) {
-                onDismiss()
-            }
-
-            PrimaryButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Chat with Kora",
+                text = stringResource(R.string.close),
             ) {
                 onDismiss()
             }

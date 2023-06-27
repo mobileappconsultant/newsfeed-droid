@@ -32,7 +32,7 @@ import com.mobileappconsultant.newsfeed.components.LabelTextField
 import com.mobileappconsultant.newsfeed.components.PrimaryButton
 import com.mobileappconsultant.newsfeed.screens.reset_password.SuccessDialog
 import com.mobileappconsultant.newsfeed.screens.sign_in.LoadingIndicator
-import com.mobileappconsultant.newsfeed.utils.NavDestinations
+import com.mobileappconsultant.newsfeed.screens.verify_user.viewmodel.VerifyUserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +54,7 @@ fun VerifyUserScreen(
                         .padding(8.dp)
                         .clickable { navController.popBackStack() },
                     painter = painterResource(
-                        R.drawable.back), contentDescription = "Back Icon"
+                        R.drawable.back), contentDescription = stringResource(R.string.back_icon)
                 )
                 },
             )
@@ -69,22 +69,22 @@ fun VerifyUserScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.reset_password),
-                contentDescription = "Verify user account",
+                contentDescription = stringResource(R.string.verify_user_account),
             )
 
             Text(
-                text = "Verify Your Account",
+                text = stringResource(R.string.verify_your_account),
             )
 
             LabelTextField(
-                label = "Enter Verification Code",
+                label = stringResource(R.string.enter_verification_code),
                 leading = {
                     Image(
                         painter = painterResource(id = R.drawable.password),
-                        contentDescription = "Password"
+                        contentDescription = stringResource(R.string.password)
                     )
                 },
-                placeholder = "Verification Code",
+                placeholder = stringResource(R.string.verification_code),
                 value = code,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
@@ -105,8 +105,8 @@ fun VerifyUserScreen(
 
             if (showSuccess) {
                 SuccessDialog(
-                    title = "Successfully verified your account",
-                    primaryButtonText = "Continue",
+                    title = stringResource(R.string.successfully_verified_your_account),
+                    primaryButtonText = stringResource(R.string.continue_txt),
                 ) {
                     viewModel.onSuccessClick(navController)
                 }

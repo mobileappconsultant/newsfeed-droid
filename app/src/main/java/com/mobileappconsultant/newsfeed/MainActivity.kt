@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
             var initialRoute = NavDestinations.Onboarding.route
 
             if (sharedPreferences.contains("signedIn")) {
-                initialRoute  = NavDestinations.SignIn.route
+                initialRoute  = NavDestinations.Home.route
             }
 
             MyApplicationTheme {
@@ -66,7 +66,6 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination = initialRoute,
-//                        startDestination = NavDestinations.Home.route,
                     ) {
 
                         composable(NavDestinations.Onboarding.route) {
@@ -96,7 +95,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(NavDestinations.ResetPassword.route) {
-                            ResetPasswordScreen(navController)
+                            ResetPasswordScreen(navController, koinViewModel())
                         }
 
                         composable(NavDestinations.Home.route) {
@@ -104,7 +103,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(NavDestinations.Welcome.route) {
-                            WelcomeScreen(navController)
+                            WelcomeScreen(navController, koinViewModel())
                         }
 
                         composable(NavDestinations.NewsDetails.route) {
@@ -169,6 +168,7 @@ class MainActivity : ComponentActivity() {
                 }
             } catch (e: ApiException) {
                 e.printStackTrace()
+                googleTokenCompleter("")
             }
         }
     }

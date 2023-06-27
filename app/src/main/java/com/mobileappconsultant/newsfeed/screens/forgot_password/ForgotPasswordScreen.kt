@@ -1,8 +1,10 @@
 package com.mobileappconsultant.newsfeed.screens.forgot_password
 
+import android.os.CountDownTimer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +44,7 @@ import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.components.PrimaryButton
 import com.mobileappconsultant.newsfeed.screens.forgot_password.viewmodel.ForgotPasswordUIState
 import com.mobileappconsultant.newsfeed.screens.forgot_password.viewmodel.ForgotPasswordViewModel
+import com.mobileappconsultant.newsfeed.screens.sign_in.LoadingIndicator
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,6 +81,7 @@ fun ForgotPasswordScreen(
                     viewModel,
                     this,
                 )
+                ForgotPasswordUIState.LOADING -> LoadingIndicator()
             }
         }
     }
@@ -95,7 +99,7 @@ fun ForgotPassword(
 
     scope.apply {
         Text(
-            text = "Enter email address to reset your password",
+            text = stringResource(R.string.enter_email_address_to_reset_your_password),
         )
 
         Box(
@@ -141,7 +145,7 @@ fun ForgotPassword(
         PrimaryButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.continue_txt),
-            onClick = viewModel::onContinueClick,
+            onClick = { viewModel.onContinueClick(navController) },
         )
     }
 }
@@ -153,7 +157,9 @@ fun EnterOTP(
     scope: ColumnScope,
 ) {
     val email by remember { viewModel.email }
-    var otpValue by remember { mutableStateOf("") }
+    var otpValue by remember { viewModel.otp }
+    val showResendCode by remember { viewModel.showResendCode }
+    val remainingTime by remember { viewModel.remainingTime }
 
     scope.apply {
         Text(
@@ -212,20 +218,29 @@ fun EnterOTP(
             },
         )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
-        ) {
-            Text(
-                text = "Resend OTP in",
-                fontWeight = FontWeight.W500
-            )
-            Text(
-                text = "55s",
-                fontWeight = FontWeight.W500,
-                color = Color(0xFF094D8B),
-            )
+        if (showResendCode) {
+            PrimaryButton(
+                text = stringResource(R.string.resend_otp),
+            ) {
+                viewModel.resendCode()
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { },
+                horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
+            ) {
+                Text(
+                    text = stringResource(R.string.resend_otp_in),
+                    fontWeight = FontWeight.W500
+                )
+                Text(
+                    text = "${remainingTime}s",
+                    fontWeight = FontWeight.W500,
+                    color = Color(0xFF094D8B),
+                )
+            }
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -233,9 +248,9 @@ fun EnterOTP(
         PrimaryButton(
             modifier = Modifier
                 .fillMaxWidth(),
-            text = stringResource(id = R.string.continue_txt)
+            text = stringResource(id = R.string.continue_txt),
         ) {
-            navController.navigate(NavDestinations.ResetPassword.route)
+            viewModel.onContinueClick(navController)
         }
     }
 }

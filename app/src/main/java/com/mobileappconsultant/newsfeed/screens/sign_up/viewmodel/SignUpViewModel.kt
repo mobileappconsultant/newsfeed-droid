@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
 import com.mobileappconsultant.newsfeedmmsdk.NewsFeedSDK
 import com.mobileappconsultant.newsfeedmmsdk.graphql.type.CreateUser
@@ -27,7 +28,7 @@ class SignUpViewModel(
 
     fun doSignUp(navController: NavController) {
         if (username.value.isEmpty() || email.value.isEmpty() || phoneNumber.value.isEmpty() || password.value.isEmpty()) {
-            Toast.makeText(application, "Please fill in all the fields!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(application, application.getString(R.string.please_fill_in_all_the_fields), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -47,7 +48,7 @@ class SignUpViewModel(
                     return@withContext
                 }
 
-                Toast.makeText(application, "Registration successful!", Toast.LENGTH_LONG).show()
+                Toast.makeText(application, application.getString(R.string.registration_successful), Toast.LENGTH_LONG).show()
 
                 navController.navigate(NavDestinations.VerifyUser.route)
             }

@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
 import com.mobileappconsultant.newsfeedmmsdk.NewsFeedSDK
 import com.mobileappconsultant.newsfeedmmsdk.graphql.type.GoogleAuth
@@ -23,8 +24,8 @@ class SignInViewModel(
 ): ViewModel() {
     private val TAG = "SignInViewModel"
 
-    val username = mutableStateOf("samson.a@bluebikglobal.com")
-    val password = mutableStateOf("Securitycode01")
+    val username = mutableStateOf("")
+    val password = mutableStateOf("")
     val loading = mutableStateOf(false)
     val rememberSelected = mutableStateOf(false)
 
@@ -79,7 +80,7 @@ class SignInViewModel(
                 }
             }
         } else {
-            Toast.makeText(application, "Please enter valid values!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(application, application.getString(R.string.please_enter_valid_values), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -110,9 +111,17 @@ class SignInViewModel(
                             if (!user.is_verified.orFalse()) {
                                 navController.navigate(NavDestinations.VerifyUser.route)
                             } else if (user.topics.isNullOrEmpty()) {
-                                navController.navigate(NavDestinations.ChooseInterest.route)
+                                navController.navigate(NavDestinations.ChooseInterest.route) {
+                                    popUpTo(NavDestinations.SignIn.route) {
+                                        inclusive = true
+                                    }
+                                }
                             } else {
-                                navController.navigate(NavDestinations.Home.route)
+                                navController.navigate(NavDestinations.Home.route) {
+                                    popUpTo(NavDestinations.SignIn.route) {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         }
                     }
@@ -121,7 +130,7 @@ class SignInViewModel(
                         Toast.makeText(
                             application,
                             user.errors!![0].message,
-                            Toast.LENGTH_SHORT
+                            Toast.LENGTH_SHORT,
                         ).show()
                     }
                 }

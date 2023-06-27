@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -82,12 +83,12 @@ fun SignInScreen(
                     .clickable { navController.popBackStack() },
                 painter = painterResource(id = R.drawable.back),
                 colorFilter = ColorFilter.tint(Color.White),
-                contentDescription = "Back button",
+                contentDescription = stringResource(R.string.back_button),
             )
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Login to Your Account",
+                text = stringResource(R.string.login_to_your_account),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.W600,
@@ -112,17 +113,17 @@ fun SignInScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                 ) {
                     LabelTextField(
-                        label = "Username",
+                        label = stringResource(R.string.username),
                         leading = {
                             Image(
                                 painter = painterResource(id = R.drawable.person),
-                                contentDescription = "Person"
+                                contentDescription = stringResource(R.string.person)
                             )
                         },
-                        placeholder = "Enter your username",
+                        placeholder = stringResource(R.string.enter_your_username),
                         value = username,
                         keyboardOptions = KeyboardOptions(
                             autoCorrect = false,
@@ -132,14 +133,14 @@ fun SignInScreen(
                     ) { username = it }
 
                     LabelTextField(
-                        label = "Password",
+                        label = stringResource(R.string.password),
                         leading = {
                             Image(
                                 painter = painterResource(id = R.drawable.password),
-                                contentDescription = "Password"
+                                contentDescription = stringResource(R.string.password)
                             )
                         },
-                        placeholder = "Enter your password",
+                        placeholder = stringResource(R.string.enter_your_password),
                         value = password,
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
@@ -148,8 +149,6 @@ fun SignInScreen(
                             imeAction = ImeAction.Done,
                         ),
                     ) { password = it }
-
-                    Box {}
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -164,13 +163,17 @@ fun SignInScreen(
                             )
 
                             Text(
-                                text = "Remember",
+                                text = stringResource(R.string.remember),
                                 style = MaterialTheme.typography.bodyMedium,
                             )
                         }
 
                         Text(
-                            text = "Forgot Password",
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(NavDestinations.ForgotPassword.route)
+                                },
+                            text = stringResource(R.string.forgot_password),
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
@@ -180,14 +183,14 @@ fun SignInScreen(
                     // Sign Up Button
                     PrimaryButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "SIGN IN"
+                        text = stringResource(R.string.sign_in),
                     ) {
                         viewModel.doSignIn(navController)
                     }
 
                     Box {}
 
-                    LineDivider(text = "Or")
+                    LineDivider(text = stringResource(R.string.or))
 
                     Box {}
 
@@ -195,10 +198,10 @@ fun SignInScreen(
                         icon = {
                             Image(
                                 painter = painterResource(id = R.drawable.google),
-                                contentDescription = "Google logo"
+                                contentDescription = stringResource(R.string.google_logo)
                             )
                         },
-                        text = "Continue with Google",
+                        text = stringResource(R.string.continue_with_google),
                         onClick = {
                             coroutineScope.launch {
                                 (context as MainActivity).startGoogleSignIn { token ->
@@ -214,9 +217,9 @@ fun SignInScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
                     ) {
-                        Text("Don't have an account? ")
+                        Text(stringResource(R.string.don_t_have_an_account))
                         Text(
-                            "Sign Up",
+                            text = stringResource(R.string.sign_up),
                             modifier = Modifier.clickable { navController.navigate(NavDestinations.SignUp.route) },
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.W600,

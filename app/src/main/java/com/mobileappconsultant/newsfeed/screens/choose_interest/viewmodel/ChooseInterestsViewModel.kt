@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
 import com.mobileappconsultant.newsfeedmmsdk.NewsFeedSDK
 import com.mobileappconsultant.newsfeedmmsdk.graphql.type.CompleteRegistration
@@ -59,7 +60,7 @@ class ChooseInterestsViewModel(
         navController: NavController,
     ) {
         if (selectedInterests.isEmpty()) {
-            Toast.makeText(application, "Please select at least one interest!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(application, application.getString(R.string.please_select_at_least_one_interest), Toast.LENGTH_SHORT).show()
             return
         }
 

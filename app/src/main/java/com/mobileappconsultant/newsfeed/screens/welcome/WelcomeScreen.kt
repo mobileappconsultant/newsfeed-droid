@@ -1,6 +1,7 @@
 package com.mobileappconsultant.newsfeed.screens.welcome
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,15 +29,18 @@ import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.components.PrimaryButton
 import com.mobileappconsultant.newsfeed.screens.welcome.components.LineDivider
 import com.mobileappconsultant.newsfeed.screens.welcome.components.SocialButton
+import com.mobileappconsultant.newsfeed.screens.welcome.viewmodel.WelcomeScreenViewModel
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
 import kotlinx.coroutines.launch
 
 @Composable
 fun WelcomeScreen(
     navController: NavController,
+    viewModel: WelcomeScreenViewModel,
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val loading = remember { viewModel.loading }
 
     Column(
         modifier = Modifier
@@ -43,16 +49,6 @@ fun WelcomeScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-//        SocialButton(
-//            icon = {
-//                Image(
-//                    painter = painterResource(id = R.drawable.facebook),
-//                    contentDescription = "Facebook logo"
-//                )
-//            },
-//            text = "Continue with Facebook",
-//            onClick = {},
-//        )
 
         SocialButton(
             icon = {
@@ -64,8 +60,19 @@ fun WelcomeScreen(
             text = "Continue with Google",
             onClick = {
                 coroutineScope.launch {
+                    loading.value = true
                     (context as MainActivity).startGoogleSignIn { token ->
-                        println("TTTTOOOOOKKKEEENNN: We got token: $token")
+                        loading.value = false
+
+                        if (token.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Unable to sign into Google",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            viewModel.signInWithGoogle(navController, token)
+                        }
                     }
                 }
             },

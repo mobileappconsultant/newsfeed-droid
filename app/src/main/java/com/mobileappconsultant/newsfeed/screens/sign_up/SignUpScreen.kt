@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -117,14 +118,14 @@ fun SignUpScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     LabelTextField(
-                        label = "Username",
+                        label = stringResource(R.string.username),
                         leading = {
                             Image(
                                 painter = painterResource(id = R.drawable.person),
-                                contentDescription = "Person"
+                                contentDescription = stringResource(R.string.person)
                             )
                         },
-                        placeholder = "Enter your username",
+                        placeholder = stringResource(R.string.enter_your_username),
                         value = username,
                         keyboardOptions = KeyboardOptions(
                             autoCorrect = false,
@@ -134,14 +135,14 @@ fun SignUpScreen(
                     ) { username = it }
 
                     LabelTextField(
-                        label = "Email",
+                        label = stringResource(R.string.email),
                         leading = {
                             Image(
                                 painter = painterResource(id = R.drawable.mail),
-                                contentDescription = "Email"
+                                contentDescription = stringResource(R.string.email)
                             )
                         },
-                        placeholder = "Enter your email",
+                        placeholder = stringResource(R.string.enter_your_email),
                         value = email,
                         keyboardOptions = KeyboardOptions(
                             autoCorrect = false,
@@ -151,14 +152,14 @@ fun SignUpScreen(
                     ) { email = it }
 
                     LabelTextField(
-                        label = "Phone Number",
+                        label = stringResource(R.string.phone_number),
                         leading = {
                             Image(
                                 painter = painterResource(id = R.drawable.phone),
-                                contentDescription = "Phone Number"
+                                contentDescription = stringResource(R.string.phone_number)
                             )
                         },
-                        placeholder = "Phone Number",
+                        placeholder = stringResource(R.string.phone_number),
                         value = phoneNumber,
                         keyboardOptions = KeyboardOptions(
                             autoCorrect = false,
@@ -168,15 +169,15 @@ fun SignUpScreen(
                     ) { phoneNumber = it }
 
                     LabelTextField(
-                        label = "Password",
+                        label = stringResource(R.string.password),
                         leading = {
                             Image(
                                 painter = painterResource(id = R.drawable.password),
-                                contentDescription = "Password"
+                                contentDescription = stringResource(R.string.password)
                             )
                         },
-                        placeholder = "Enter your password",
-                        supportingText = { Text("Password needs at least 8 characters") },
+                        placeholder = stringResource(R.string.enter_your_password),
+                        supportingText = { Text(stringResource(R.string.password_needs_at_least_8_characters)) },
                         value = password,
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
@@ -191,14 +192,14 @@ fun SignUpScreen(
                     // Sign Up Button
                     PrimaryButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "SIGN UP"
+                        text = stringResource(R.string.sign_up)
                     ) {
                         viewModel.doSignUp(navController)
                     }
 
                     Box {}
 
-                    LineDivider(text = "Or")
+                    LineDivider(text = stringResource(R.string.or))
 
                     Box {}
 
@@ -206,10 +207,10 @@ fun SignUpScreen(
                         icon = {
                             Image(
                                 painter = painterResource(id = R.drawable.google),
-                                contentDescription = "Google logo"
+                                contentDescription = stringResource(R.string.google_logo)
                             )
                         },
-                        text = "Continue with Google",
+                        text = stringResource(R.string.continue_with_google),
                         onClick = {},
                     )
 
@@ -217,9 +218,9 @@ fun SignUpScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
                     ) {
-                        Text("Already have an account? ")
+                        Text(stringResource(R.string.already_have_an_account))
                         Text(
-                            "Sign In",
+                            stringResource(R.string.sign_in),
                             modifier = Modifier.clickable { navController.navigate(NavDestinations.SignIn.route) },
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.W600,

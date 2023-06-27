@@ -21,6 +21,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,15 +39,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import com.mobileappconsultant.newsfeed.NewsHolder
 import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.components.LabelTextField
 import com.mobileappconsultant.newsfeed.components.PrimaryButton
+import com.mobileappconsultant.newsfeed.screens.choose_interest.viewmodel.UIState
+import com.mobileappconsultant.newsfeed.screens.reset_password.viewmodel.ResetPasswordViewModel
+import com.mobileappconsultant.newsfeed.screens.sign_in.LoadingIndicator
+import com.mobileappconsultant.newsfeed.utils.NavDestinations
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResetPasswordScreen(
     navController: NavController,
+    viewModel: ResetPasswordViewModel,
 ) {
+    val email = NewsHolder.email ?: return
+
+    val uiState by remember { viewModel.uiState }
+
+    var password by remember { viewModel.newPassword }
+    var confirmPassword by remember { viewModel.confirmPassword }
+    val showSuccess by remember { viewModel.showSuccess }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -54,7 +71,7 @@ fun ResetPasswordScreen(
                         .padding(8.dp)
                         .clickable { navController.popBackStack() },
                     painter = painterResource(
-                        R.drawable.back), contentDescription = "Back Icon"
+                        R.drawable.back), contentDescription = stringResource(R.string.back_icon)
                     )
                 },
             )
@@ -69,7 +86,7 @@ fun ResetPasswordScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.reset_password),
-                contentDescription = "Reset Password Image",
+                contentDescription = stringResource(R.string.reset_password_image),
             )
             
             Text(
@@ -81,45 +98,57 @@ fun ResetPasswordScreen(
                 leading = {
                     Image(
                         painter = painterResource(id = R.drawable.password),
-                        contentDescription = "Password"
+                        contentDescription = stringResource(R.string.password)
                     )
                 },
-                placeholder = "Enter your new password",
-                value = "",
+                placeholder = stringResource(R.string.enter_your_new_password),
+                value = password,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     autoCorrect = false,
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next,
                 ),
-            ) { }
+            ) { password = it }
 
             LabelTextField(
                 label = "",
                 leading = {
                     Image(
                         painter = painterResource(id = R.drawable.password),
-                        contentDescription = "Password"
+                        contentDescription = stringResource(R.string.password)
                     )
                 },
-                placeholder = "Confirm password",
-                value = "",
+                placeholder = stringResource(R.string.confirm_password),
+                value = confirmPassword,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     autoCorrect = false,
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next,
+                    imeAction = ImeAction.Done,
                 ),
-            ) { }
+            ) { confirmPassword = it }
 
             Spacer(modifier = Modifier.weight(1f))
 
             PrimaryButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.continue_txt)
-            ) {}
+            ) { viewModel.resetPassword(email) }
 
-            SuccessDialog()
+            if (showSuccess) {
+                SuccessDialog() {
+                    navController.navigate(NavDestinations.SignIn.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+        }
+
+        if (uiState == UIState.LOADING) {
+            LoadingIndicator()
         }
     }
 }
@@ -127,7 +156,7 @@ fun ResetPasswordScreen(
 @Composable
 fun SuccessDialog(
     title: String = "New password update successful.",
-    primaryButtonText: String = "Login",
+    primaryButtonText: String = stringResource(R.string.login),
     onClick: () -> Unit = {},
 ) {
     Dialog(
@@ -145,12 +174,12 @@ fun SuccessDialog(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
                 painter = painterResource(id = R.drawable.success),
-                contentDescription = "Success Image",
+                contentDescription = stringResource(R.string.success_image),
             )
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "Successful!",
+                text = stringResource(R.string.successful),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.primary,

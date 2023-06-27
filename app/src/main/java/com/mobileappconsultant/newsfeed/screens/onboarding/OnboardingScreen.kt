@@ -4,6 +4,7 @@ import android.view.RoundedCorner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,8 +61,14 @@ fun OnboardingScreen(
             .padding(16.dp),
     ) {
         Text(
-            text = "Skip",
-            modifier = Modifier.align(Alignment.End),
+            text = stringResource(R.string.skip),
+            modifier = Modifier.align(Alignment.End).clickable {
+                navController.navigate(NavDestinations.Welcome.route) {
+                    popUpTo(NavDestinations.Onboarding.route) {
+                        inclusive = true
+                    }
+                }
+            },
         )
 
         Box(modifier = Modifier.weight(1f))
@@ -83,7 +90,7 @@ fun OnboardingScreen(
                     Image(
                         modifier = Modifier.fillMaxSize(),
                         painter = painterResource(getPageImage(page)),
-                        contentDescription = "onboarding image 1",
+                        contentDescription = stringResource(R.string.onboarding_image_1),
                         contentScale = ContentScale.FillBounds,
                     )
                 }
@@ -111,7 +118,7 @@ fun OnboardingScreen(
             PrimaryButton(
                 modifier = Modifier.fillMaxWidth()
                     .padding(top = 16.dp),
-                text = "NEXT",
+                text = stringResource(R.string.next),
             ) {
                 if (pagerState.currentPage < viewModel.onboardingItems.size - 1) {
                     coroutineScope.launch {

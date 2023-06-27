@@ -74,16 +74,10 @@ fun ChooseInterestScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
         ) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Skip",
-                textAlign = TextAlign.End,
-            )
-
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = "Select your favourite news categories",
+                text = stringResource(R.string.select_your_favourite_news_categories),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.W500,
             )
@@ -144,7 +138,7 @@ fun NewsCategoryUI(
                 horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.add), contentDescription = "Add Icon",
+                    painter = painterResource(R.drawable.add), contentDescription = stringResource(R.string.add_icon),
                     tint = if (selected) Color.White else Color.Black,
                 )
                 Text(name, color = if (selected) Color.White else Color.Black)

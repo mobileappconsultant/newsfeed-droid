@@ -1,4 +1,4 @@
-package com.mobileappconsultant.newsfeed.screens.verify_user
+package com.mobileappconsultant.newsfeed.screens.verify_user.viewmodel
 
 import android.app.Application
 import android.widget.Toast
@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.mobileappconsultant.newsfeed.NewsFeedApplication
+import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
 import com.mobileappconsultant.newsfeedmmsdk.NewsFeedSDK
 import com.mobileappconsultant.newsfeedmmsdk.graphql.type.VerifyOtp
@@ -47,7 +47,7 @@ class VerifyUserViewModel(
     }
 
     fun onSuccessClick(navController: NavController) {
-        Toast.makeText(application, "Please sign in again", Toast.LENGTH_SHORT).show()
+        Toast.makeText(application, application.getString(R.string.please_sign_in_again), Toast.LENGTH_SHORT).show()
         navController.navigate(NavDestinations.SignIn.route) {
             popUpTo(NavDestinations.VerifyUser.route) {
                 inclusive = true

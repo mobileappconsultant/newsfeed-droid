@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -71,7 +72,7 @@ fun HomeScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.latest_news),
-                contentDescription = "Latest news",
+                contentDescription = stringResource(R.string.latest_news),
             )
 
             LazyRow(
@@ -109,7 +110,7 @@ fun HomeScreen(
             }
             
             Text(
-                text = "Breaking News",
+                text = stringResource(R.string.breaking_news),
                 style = MaterialTheme.typography.bodyLarge,
             )
 
@@ -127,7 +128,7 @@ fun HomeScreen(
             }
 
             Text(
-                text = "Trending News",
+                text = stringResource(R.string.trending_news),
                 style = MaterialTheme.typography.titleLarge,
             )
 
@@ -148,7 +149,7 @@ fun HomeScreen(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "No Trending News at the moment",
+                    text = stringResource(R.string.no_trending_news_at_the_moment),
                     textAlign = TextAlign.Center,
                 )
             }
@@ -187,7 +188,7 @@ fun LatestNewsIcon(
             Image(
                 modifier = Modifier.fillMaxSize(),
                 painter = painterResource(id = R.drawable.newsfeed_logo),
-                contentDescription = "News",
+                contentDescription = stringResource(R.string.news),
                 contentScale = ContentScale.FillBounds,
             )
         }
@@ -208,7 +209,7 @@ fun BreakingNewsItem(
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
-            model = article.imageUrl, contentDescription = "Article Image",
+            model = article.imageUrl, contentDescription = stringResource(R.string.article_image),
             contentScale = ContentScale.Crop,
         )
 
@@ -227,40 +228,20 @@ fun BreakingNewsItem(
                 fontWeight = FontWeight.W400,
             )
 
+            // Like
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                // Like
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.like_outline),
-                        contentDescription = "Like",
-                        tint = Color.White,
-                    )
+                Icon(
+                    painter = painterResource(R.drawable.like_outline),
+                    contentDescription = stringResource(R.string.like),
+                    tint = Color.White,
+                )
 
-                    Text(
-                        text = "800",
-                        color = Color.White,
-                    )
-                }
-
-                // Message
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.message),
-                        contentDescription = "Message",
-                        tint = Color.White,
-                    )
-
-                    Text(
-                        text = "201",
-                        color = Color.White,
-                    )
-                }
+                Text(
+                    text = "0",
+                    color = Color.White,
+                )
             }
         }
     }
