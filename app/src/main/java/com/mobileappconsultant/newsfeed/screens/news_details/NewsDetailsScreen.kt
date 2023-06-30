@@ -199,11 +199,10 @@ fun NewsDetailsScreen(
                 showSummary.value = false
             }
         }
+    }
 
-        if (uiState.value == UIState.LOADING) {
-            LoadingIndicator()
-            return@Scaffold
-        }
+    if (uiState.value == UIState.LOADING) {
+        LoadingIndicator()
     }
 }
 

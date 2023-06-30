@@ -7,9 +7,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.mobileappconsultant.newsfeed.screens.choose_interest.viewmodel.NewsInterest
 import com.mobileappconsultant.newsfeed.screens.choose_interest.viewmodel.UIState
 import com.mobileappconsultant.newsfeed.screens.sign_in.viewmodel.orFalse
+import com.mobileappconsultant.newsfeed.utils.NavDestinations
 import com.mobileappconsultant.newsfeedmmsdk.NewsFeedSDK
 import com.mobileappconsultant.newsfeedmmsdk.graphql.type.NewsQuery
 import com.mobileappconsultant.newsfeedmmsdk.models.Article
@@ -38,7 +40,7 @@ class HomeScreenViewModel(
 
     private var dataFetched = false
 
-    fun fetchData() {
+    fun fetchData(navController: NavController) {
         if (dataFetched) {
             return
         }
@@ -46,10 +48,18 @@ class HomeScreenViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             uiState.value = UIState.LOADING
-            val news = sdk.fetchNewsSources()
+            val news = sdk.fetchNewsSources(500, 1)
             if (news.error) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(application, news.errors!![0].message, Toast.LENGTH_SHORT).show()
+
+                    if (news.errors!![0].message == "token expired") {
+                        navController.navigate(NavDestinations.SignIn.route) {
+                            popUpTo(navController.graph.startDestinationRoute ?: "") {
+                                inclusive = true
+                            }
+                        }
+                    }
                 }
             } else {
                 newsSources.clear()

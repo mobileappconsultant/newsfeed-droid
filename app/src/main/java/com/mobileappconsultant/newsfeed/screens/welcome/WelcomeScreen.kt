@@ -87,22 +87,14 @@ fun WelcomeScreen(
             modifier = Modifier.fillMaxWidth(),
             text = "SIGN IN WITH PASSWORD",
         ) {
-            navController.navigate(NavDestinations.SignIn.route) {
-                popUpTo(NavDestinations.Welcome.route) {
-                    inclusive = true
-                }
-            }
+            navController.navigate(NavDestinations.SignIn.route)
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)) {
             Text("Don't have an account? ")
             Text(
                 "Sign Up",
-                modifier = Modifier.clickable { navController.navigate(NavDestinations.SignUp.route) {
-                    popUpTo(NavDestinations.Welcome.route) {
-                        inclusive = true
-                    }
-                } },
+                modifier = Modifier.clickable { navController.navigate(NavDestinations.SignUp.route) },
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.W600,
             )

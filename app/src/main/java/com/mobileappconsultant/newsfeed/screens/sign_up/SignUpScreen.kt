@@ -26,11 +26,13 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +45,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.mobileappconsultant.newsfeed.MainActivity
 import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.components.LabelTextField
 import com.mobileappconsultant.newsfeed.components.PrimaryButton
@@ -53,6 +56,7 @@ import com.mobileappconsultant.newsfeed.screens.welcome.components.SocialButton
 import com.mobileappconsultant.newsfeed.ui.theme.blue
 import com.mobileappconsultant.newsfeed.utils.BackgroundShimmer
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,6 +72,9 @@ fun SignUpScreen(
 
     val loading by remember { viewModel.loading }
 
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +83,8 @@ fun SignUpScreen(
         BackgroundShimmer()
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             Image(
@@ -211,7 +219,13 @@ fun SignUpScreen(
                             )
                         },
                         text = stringResource(R.string.continue_with_google),
-                        onClick = {},
+                        onClick = {
+                            coroutineScope.launch {
+                                (context as MainActivity).startGoogleSignIn { token ->
+                                    viewModel.signUpWithGoogle(navController, token)
+                                }
+                            }
+                        },
                     )
 
                     Row(

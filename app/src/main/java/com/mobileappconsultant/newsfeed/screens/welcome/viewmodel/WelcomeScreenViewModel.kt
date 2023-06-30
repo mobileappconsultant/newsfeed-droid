@@ -23,6 +23,7 @@ class WelcomeScreenViewModel(
     val loading = mutableStateOf(false)
 
     fun signInWithGoogle(navController: NavController, token: String) {
+        if (token.isEmpty()) return
         viewModelScope.launch(Dispatchers.IO) {
             loading.value = true
             val response = sdk.googleLogin(

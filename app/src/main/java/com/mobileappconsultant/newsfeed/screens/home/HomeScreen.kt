@@ -58,7 +58,7 @@ fun HomeScreen(
     val selectedCategory = remember { viewModel.selectedInterest }
 
     LaunchedEffect("") {
-        viewModel.fetchData()
+        viewModel.fetchData(navController)
     }
 
     Scaffold { padding ->
