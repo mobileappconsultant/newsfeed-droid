@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.mobileappconsultant.newsfeed.NewsHolder
 import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.utils.NavDestinations
 import com.mobileappconsultant.newsfeedmmsdk.NewsFeedSDK
@@ -30,6 +31,20 @@ class ChooseInterestsViewModel(
         withContext(Dispatchers.IO) {
             uiState.value = UIState.LOADING
             val response = sdk.getNewsCategories()
+
+            val preSelectedInterests = mutableListOf<String>()
+
+            if (NewsHolder.showBackButton) {
+                val profileResponse = sdk.getUser()
+                if (!profileResponse.error) {
+                    profileResponse.data?.let { profile ->
+                        profile.topics?.filterNotNull()?.let { topics ->
+                            preSelectedInterests.addAll(topics)
+                        }
+                    }
+                }
+            }
+
             uiState.value = UIState.NORMAL
 
             withContext(Dispatchers.Main) {
@@ -43,6 +58,12 @@ class ChooseInterestsViewModel(
                         id = item.id ?: "",
                         name = item.name ?: "",
                     ))
+                }
+
+                for (interest in interests) {
+                    if (preSelectedInterests.contains(interest.name)) {
+                        selectedInterests.add(interest)
+                    }
                 }
             }
         }

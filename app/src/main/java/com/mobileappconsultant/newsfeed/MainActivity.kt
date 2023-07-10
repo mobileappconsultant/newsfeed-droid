@@ -25,6 +25,7 @@ import com.mobileappconsultant.newsfeed.screens.forgot_password.ForgotPasswordSc
 import com.mobileappconsultant.newsfeed.screens.home.HomeScreen
 import com.mobileappconsultant.newsfeed.screens.news_details.NewsDetailsScreen
 import com.mobileappconsultant.newsfeed.screens.onboarding.OnboardingScreen
+import com.mobileappconsultant.newsfeed.screens.profile.ProfileScreen
 import com.mobileappconsultant.newsfeed.screens.reset_password.ResetPasswordScreen
 import com.mobileappconsultant.newsfeed.screens.sign_in.SignInScreen
 import com.mobileappconsultant.newsfeed.screens.sign_up.SignUpScreen
@@ -114,6 +115,10 @@ class MainActivity : ComponentActivity() {
                             VerifyUserScreen(navController, koinViewModel())
                         }
 
+                        composable(NavDestinations.Profile.route) {
+                            ProfileScreen(viewModel = koinViewModel(), navController = navController)
+                        }
+
                     }
                 }
             }
@@ -130,22 +135,9 @@ class MainActivity : ComponentActivity() {
                 .build()
 
             val client = GoogleSignIn.getClient(this@MainActivity, options);
-            val account = GoogleSignIn.getLastSignedInAccount(this@MainActivity)
-            if (account != null && account.account != null) {
-                withContext(Dispatchers.IO) {
-                    val token = GoogleAuthUtil.getToken(
-                        this@MainActivity,
-                        account.account!!,
-                        "oauth2:email profile",
-                    )
-
-                    completer(token)
-                }
-            } else {
-                googleTokenCompleter = completer
-                val intent = client.signInIntent
-                startActivityForResult(intent, RC_SIGN_IN)
-            }
+            googleTokenCompleter = completer
+            val intent = client.signInIntent
+            startActivityForResult(intent, RC_SIGN_IN)
         }
     }
 
@@ -171,21 +163,5 @@ class MainActivity : ComponentActivity() {
                 googleTokenCompleter("")
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyApplicationTheme {
-        Greeting("Android")
     }
 }

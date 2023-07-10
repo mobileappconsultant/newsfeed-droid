@@ -1,6 +1,8 @@
 package com.mobileappconsultant.newsfeed.screens.news_details
 
 import android.content.Intent
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +40,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -136,10 +140,17 @@ fun NewsDetailsScreen(
 
             item {
                 Row(
+                    modifier = Modifier.clickable {
+                        val url = article.link
+                        val intent = CustomTabsIntent.Builder().build()
+                        intent.launchUrl(context, Uri.parse(url))
+                    },
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    Icon(painter = painterResource(id = R.drawable.mdi_web), contentDescription = "mdi_web")
                     Text(
+                        modifier = Modifier.weight(1f),
                         text = article.categories?.joinToString() ?: stringResource(R.string.unknown),
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.W500,
@@ -152,7 +163,9 @@ fun NewsDetailsScreen(
                             .background(Color.Gray),
                     ) {}
 
-                    Text(text = article.pubDate)
+                    Text(
+                        text = article.pubDate, style = MaterialTheme.typography.bodySmall,
+                    )
                 }
             }
 
@@ -202,7 +215,7 @@ fun NewsDetailsScreen(
     }
 
     if (uiState.value == UIState.LOADING) {
-        LoadingIndicator()
+        LoadingIndicator(removeTouch = true)
     }
 }
 

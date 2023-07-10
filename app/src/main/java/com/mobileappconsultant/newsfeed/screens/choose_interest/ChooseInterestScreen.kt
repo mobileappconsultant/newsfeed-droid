@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.mobileappconsultant.newsfeed.NewsHolder
 import com.mobileappconsultant.newsfeed.R
 import com.mobileappconsultant.newsfeed.components.PrimaryButton
 import com.mobileappconsultant.newsfeed.screens.choose_interest.viewmodel.ChooseInterestsViewModel
@@ -50,8 +52,21 @@ fun ChooseInterestScreen(
     val interests = remember { viewModel.interests }
     val selectedInterests = remember { viewModel.selectedInterests }
 
-    Scaffold {
-
+    Scaffold(
+        topBar = {
+            if (NewsHolder.showBackButton) {
+                TopAppBar(
+                    title = { Text(text = "Edit Interests")},
+                    navigationIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.back), contentDescription = "Back",
+                            modifier = Modifier.clickable { navController.popBackStack() }.padding(8.dp)
+                        )
+                    }
+                )
+            }
+        }
+    ) {
         LaunchedEffect(Unit) {
             viewModel.fetchInterests()
         }

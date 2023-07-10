@@ -42,4 +42,8 @@ sealed class NavDestinations {
     object VerifyUser: NavDestinations() {
         override val route: String = "verify_user"
     }
+
+    object Profile: NavDestinations() {
+        override val route: String = "profile"
+    }
 }

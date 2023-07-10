@@ -237,12 +237,15 @@ fun SignInScreen(
 }
 
 @Composable
-fun LoadingIndicator() {
+fun LoadingIndicator(removeTouch: Boolean = false) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.2f))
-            .clickable { },
+            .background(Color.Black.copy(alpha = 0.2f)).apply {
+                if (!removeTouch) {
+                    clickable {  }
+                }
+            },
     ) {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center),

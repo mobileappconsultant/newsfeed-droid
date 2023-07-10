@@ -6,6 +6,7 @@ import com.mobileappconsultant.newsfeed.screens.forgot_password.viewmodel.Forgot
 import com.mobileappconsultant.newsfeed.screens.home.viewmodel.HomeScreenViewModel
 import com.mobileappconsultant.newsfeed.screens.news_details.viewmodel.NewsDetailsViewModel
 import com.mobileappconsultant.newsfeed.screens.onboarding.viewmodel.OnboardingViewModel
+import com.mobileappconsultant.newsfeed.screens.profile.viewmodel.ProfileViewModel
 import com.mobileappconsultant.newsfeed.screens.reset_password.viewmodel.ResetPasswordViewModel
 import com.mobileappconsultant.newsfeed.screens.sign_in.viewmodel.SignInViewModel
 import com.mobileappconsultant.newsfeed.screens.sign_up.viewmodel.SignUpViewModel
@@ -29,6 +30,7 @@ private val appModule = module {
     viewModelOf(::VerifyUserViewModel)
     viewModelOf(::WelcomeScreenViewModel)
     viewModelOf(::ResetPasswordViewModel)
+    viewModelOf(::ProfileViewModel)
     single { NewsFeedSDK }
 }
 
